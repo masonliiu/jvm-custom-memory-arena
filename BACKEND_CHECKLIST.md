@@ -70,11 +70,11 @@
 - [x] Handle UTF-16 encoding
 
 ### 3.4 Implement Hash Table (Advanced)
-- [ ] Define hash table layout
-- [ ] Implement hash function
-- [ ] Implement bucket array
-- [ ] Implement collision resolution
-- [ ] Add get/put operations
+- [x] Define hash table layout
+- [x] Implement hash function
+- [x] Implement bucket array
+- [x] Implement collision resolution
+- [x] Add get/put operations
 
 ## Phase 4: Advanced Memory Management
 

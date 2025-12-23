@@ -13,6 +13,7 @@ public class Main {
         testArrayStore();
         testVectorStore();
         testStringStore();
+        testHashTableStore();
     }
 
     static void testBasicAllocation() {
@@ -454,6 +455,65 @@ public class Main {
         System.out.println("  Char data start: address " + (str1Addr + 4) + " (10 bytes for 5 chars)");
         System.out.println("  Total size: " + (4 + 5 * 2) + " bytes");
         System.out.println("  UTF-16 encoding: 2 bytes per character");
+        System.out.println();
+    }
+
+    static void testHashTableStore() {
+        System.out.println("Test 13: Hash Table");
+        MemoryArena arena = new MemoryArena(1024);
+        HashTableStore hashTable = new HashTableStore(arena);
+        
+        System.out.println("Creating hash table with 8 buckets:");
+        int tableAddr = hashTable.createHashTable(8);
+        System.out.println("  Table address: " + tableAddr);
+        System.out.println("  Bucket count: " + hashTable.getBucketCount(tableAddr));
+        
+        System.out.println("\nInserting key-value pairs:");
+        hashTable.put(tableAddr, 10, 100);
+        System.out.println("  put(10, 100)");
+        hashTable.put(tableAddr, 20, 200);
+        System.out.println("  put(20, 200)");
+        hashTable.put(tableAddr, 30, 300);
+        System.out.println("  put(30, 300)");
+        hashTable.put(tableAddr, 18, 180);
+        System.out.println("  put(18, 180) - potential collision with 10");
+        hashTable.put(tableAddr, 26, 260);
+        System.out.println("  put(26, 260) - potential collision with 18");
+        
+        System.out.println("\nHash table structure:");
+        hashTable.printHashTable(tableAddr);
+        
+        System.out.println("\nRetrieving values:");
+        System.out.println("  get(10) = " + hashTable.get(tableAddr, 10));
+        System.out.println("  get(20) = " + hashTable.get(tableAddr, 20));
+        System.out.println("  get(30) = " + hashTable.get(tableAddr, 30));
+        System.out.println("  get(18) = " + hashTable.get(tableAddr, 18));
+        System.out.println("  get(26) = " + hashTable.get(tableAddr, 26));
+        System.out.println("  get(99) = " + hashTable.get(tableAddr, 99));
+        
+        System.out.println("\nChecking contains:");
+        System.out.println("  contains(10) = " + hashTable.contains(tableAddr, 10));
+        System.out.println("  contains(99) = " + hashTable.contains(tableAddr, 99));
+        
+        System.out.println("\nUpdating existing key:");
+        hashTable.put(tableAddr, 10, 1000);
+        System.out.println("  put(10, 1000) - update");
+        System.out.println("  get(10) = " + hashTable.get(tableAddr, 10));
+        
+        System.out.println("\nRemoving key:");
+        hashTable.remove(tableAddr, 20);
+        System.out.println("  remove(20)");
+        System.out.println("  get(20) = " + hashTable.get(tableAddr, 20));
+        System.out.println("  contains(20) = " + hashTable.contains(tableAddr, 20));
+        
+        System.out.println("\nHash table after removal:");
+        hashTable.printHashTable(tableAddr);
+        
+        System.out.println("\nHash table details:");
+        System.out.println("  Layout: [bucketCount][bucket array pointers]");
+        System.out.println("  Entry layout: [key:4B][value:4B][next:4B]");
+        System.out.println("  Collision resolution: Chaining (linked lists)");
+        System.out.println("  Hash function: key % bucketCount");
         System.out.println();
     }
 }
