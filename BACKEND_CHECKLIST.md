@@ -1,6 +1,6 @@
-# Backend Development Roadmap
+# Development Roadmap (Recruiter-Ready + Useful)
 
-## Phase 1: Foundation & Code Quality 
+## Phase 1: Foundation & Code Quality
 
 ### 1.1 Extract NodeStore from MemoryArena 
 - [x] Create NodeStore class with MemoryArena reference
@@ -76,24 +76,31 @@
 - [x] Implement collision resolution
 - [x] Add get/put operations
 
-## Phase 4: Advanced Memory Management
+## Phase 4: Allocator Depth & Introspection
 
 ### 4.1 Add Memory Regions/Segments
 - [x] Create MemoryRegion class
 - [x] Track multiple regions
 - [x] Validate addresses against regions
 
-### 4.2 Implement Free List Allocator (Optional)
-- [ ] Track freed blocks
-- [ ] Implement free() method
-- [ ] Modify alloc() to check free list
-- [ ] Handle fragmentation
+### 4.2 Allocation Headers & Metadata
+- [ ] Define header layout (size/type/flags)
+- [ ] Write header on alloc()
+- [ ] Add helpers to read headers for debugging
+- [ ] Optional: canaries for over/underflow detection
 
-### 4.3 Add Memory Statistics & Visualization
-- [ ] Track allocation statistics
-- [ ] Implement getStats() method
-- [ ] Implement visualize() method
-- [ ] Print memory layout diagrams
+### 4.3 Free List Allocator
+- [ ] Track freed blocks (free list)
+- [ ] Implement free(ptr)
+- [ ] Modify alloc() to reuse free blocks
+- [ ] Coalesce adjacent free blocks
+- [ ] Expose fragmentation stats
+
+### 4.4 Memory Statistics & Visualization
+- [ ] Track allocation stats (count, bytes, peak)
+- [ ] Implement getStats() API
+- [ ] Implement visualize() (ASCII layout map)
+- [ ] Print per-region usage breakdown
 
 ## Phase 5: Data Structure Operations
 
@@ -113,6 +120,28 @@
 - [ ] Implement enqueue(), dequeue()
 - [ ] Handle empty queue case
 
+### 5.4 Hash Table Resizing
+- [ ] Add load factor tracking
+- [ ] Implement rehash/grow
+- [ ] Preserve chaining during resize
+
+## Phase 6: Library-Ready API
+
+### 6.1 Public API Surface
+- [ ] Define stable API package (arena + stores)
+- [ ] Add pointer validation helpers for users
+- [ ] Provide clear exceptions for misuse
+
+### 6.2 Examples & Demos
+- [ ] Create Examples.java with focused demos
+- [ ] Add "one-command" demo runner
+- [ ] Add memory layout visualization demo
+
+### 6.3 Packaging
+- [ ] Add minimal build setup (jar output)
+- [ ] Add README usage snippets
+- [ ] Version the API (semver note)
+
 ## Phase 6: Testing & Documentation
 
 ### 6.1 Unit Tests for All Operations
@@ -120,6 +149,11 @@
 - [ ] Test failure cases
 - [ ] Test edge cases
 - [ ] Test bounds violations
+
+### 6.2 Fuzz/Randomized Tests
+- [ ] Randomized alloc/free patterns
+- [ ] Invariants: no overlap, bounds safe
+- [ ] Regression seeds on failures
 
 ### 6.2 Memory Layout Diagrams Generator
 - [ ] Implement printMemoryLayout()
@@ -133,3 +167,7 @@
 - [ ] Array operations
 - [ ] Error case demonstrations
 
+## Phase 7: Optional Frontend Visualization
+- [ ] Minimal web UI to animate allocation
+- [ ] Step-by-step operation playback
+- [ ] Exportable diagrams for README/blog
